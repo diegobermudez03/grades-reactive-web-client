@@ -15,11 +15,13 @@ class CoursesTable extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _getHeader(),
-        ..._printCourses(courses, context)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _getHeader(),
+          ..._printCourses(courses, context)
+        ],
+      ),
     );
   }
 

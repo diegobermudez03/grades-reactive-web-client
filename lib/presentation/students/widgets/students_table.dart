@@ -15,12 +15,14 @@ class StudentsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _studentDropdownWithButton(context),
-        _printHeader(),
-        ..._printRows(courseStudents, (student) => callback(context, student)),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _studentDropdownWithButton(context),
+          _printHeader(),
+          ..._printRows(courseStudents, (student) => callback(context, student)),
+        ],
+      ),
     );
   }
 
