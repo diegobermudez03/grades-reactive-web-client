@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider<CoursesBloc>(
         create: (context) => GetIt.instance.get<CoursesBloc>(),
-        child: CoursesPage(),
+        child: Scaffold(
+          appBar: AppBar(),
+          body: CoursesPage(),
+        )
       ),
     );
   }

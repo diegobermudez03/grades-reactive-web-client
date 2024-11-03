@@ -21,23 +21,26 @@ class StudentsPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StudentsBloc, StudentsState>(builder: (context, state) {
-      final provider = BlocProvider.of<StudentsBloc>(context);
-      if(state is StudentsInitialState){
-        provider.getStudents(course.id);
-      }
-      return Column(
-        children: [
-          Text(course.materia.name),
-          Text(course.code),
-          switch(state){
-            StudentsFailureState()=> const Center(child: Text("Hubo un error obteniendo los estudiantes"),),
-            StudentsRetrievedState(courseStudents: final cStudents, allStudents: final all)=> StudentsTable(courseStudents: cStudents, allStudents: all,callback: handleStudentGrades(course.id),),
-            StudentsState()=> const Center(child: CircularProgressIndicator(),)
-          }
-        ],
-      );
-    },);
+    return Scaffold(
+      appBar: AppBar(),
+      body: BlocBuilder<StudentsBloc, StudentsState>(builder: (context, state) {
+        final provider = BlocProvider.of<StudentsBloc>(context);
+        if(state is StudentsInitialState){
+          provider.getStudents(course.id);
+        }
+        return Column(
+          children: [
+            Text(course.materia.name),
+            Text(course.code),
+            switch(state){
+              StudentsFailureState()=> const Center(child: Text("Hubo un error obteniendo los estudiantes"),),
+              StudentsRetrievedState(courseStudents: final cStudents, allStudents: final all)=> StudentsTable(courseStudents: cStudents, allStudents: all,callback: handleStudentGrades(course.id),),
+              StudentsState()=> const Center(child: CircularProgressIndicator(),)
+            }
+          ],
+        );
+      },),
+    );
   }
 
   void Function(BuildContext, StudentEntity) handleStudentGrades(int courseId){

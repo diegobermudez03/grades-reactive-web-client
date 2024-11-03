@@ -10,8 +10,11 @@ class GradesRetreievingFaliureState implements GradesState{}
 
 class GradesRetrievedState implements GradesState{
   final List<GradeEntity> grades;
-  final bool addedGrade;
+  final int gradesAdded;
+  final int gradesUpdated;
   final bool removedGrade;
+  final double ponderada;
+  final double percentageAccumulated;
 
-  GradesRetrievedState(this.grades, this.addedGrade, this.removedGrade);
+  GradesRetrievedState(this.grades, this.gradesAdded,this.gradesUpdated, this.removedGrade, this.ponderada, this.percentageAccumulated);
 }

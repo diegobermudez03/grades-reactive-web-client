@@ -1,4 +1,5 @@
 import 'package:reactive_client/repository/entities/course_entity.dart';
+import 'package:reactive_client/repository/entities/grade_entity.dart';
 import 'package:reactive_client/repository/entities/materia_entity.dart';
 import 'package:reactive_client/repository/entities/student_entity.dart';
 import 'package:reactive_client/repository/entities/teacher_entity.dart';
@@ -30,11 +31,21 @@ TeacherEntity jsonToTeacherEntity(Map<String, dynamic> json){
     json["correo"]
   );
 }
+
 StudentEntity jsonToStudentEntity(Map<String, dynamic> json){
   return StudentEntity(
     json["id"], 
     json["nombre"], 
     json["apellido"], 
     json["correo"]
+  );
+}
+
+GradeEntity jsonToGradeEntity(Map<String, dynamic> json){
+  return GradeEntity(
+    json["id"], 
+    json["porcentaje"], 
+    json["valor"], 
+    json["observacion"]
   );
 }
