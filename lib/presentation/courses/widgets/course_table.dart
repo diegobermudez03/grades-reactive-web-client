@@ -1,13 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_client/repository/entities/course_entity.dart';
 
 class CoursesTable extends StatelessWidget{
 
   final List<CourseEntity> courses;
+  final void Function(BuildContext, CourseEntity) callback;
 
   CoursesTable({
     super.key,
-    required this.courses
+    required this.courses,
+    required this.callback
   });
 
   @override
@@ -15,7 +18,7 @@ class CoursesTable extends StatelessWidget{
     return Column(
       children: [
         _getHeader(),
-        ..._printCourses(courses)
+        ..._printCourses(courses, context)
       ],
     );
   }
@@ -32,16 +35,17 @@ class CoursesTable extends StatelessWidget{
     );
   }
 
-  List<Widget> _printCourses(List<CourseEntity> courses){
+  List<Widget> _printCourses(List<CourseEntity> courses, BuildContext context){
     return courses.map((entity)=>
         Row(
           children: [
             Text(entity.materia.name),
             Text('${entity.teacher.name} ${entity.teacher.lastName}'),
             Text(entity.code),
-            TextButton(onPressed: (){}, child: Text('Ver estudiantes'))
+            TextButton(onPressed: ()=>callback(context, entity), child: Text('Ver estudiantes'))
           ],
         )
     ).toList();
   }
+
 }
