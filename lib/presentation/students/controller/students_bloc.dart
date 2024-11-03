@@ -10,7 +10,15 @@ class StudentsBloc extends Cubit<StudentsState>{
     this.repo
   ):super(StudentsInitialState());
 
-  void GetStudents(int courseId)async{
+  void getStudents(int courseId)async{
+    await Future.delayed(Duration.zero);
+    emit(StudentsRetrievingState());
 
+    final response = await repo.getStudentsFromCourse(courseId);
+
+    response.fold(
+      (f)=> emit(StudentsFailureState()), 
+      (students)=> emit(StudentsRetrievedState(students))
+    );
   }
 }

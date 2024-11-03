@@ -24,7 +24,7 @@ class StudentsPage extends StatelessWidget{
     return BlocBuilder<StudentsBloc, StudentsState>(builder: (context, state) {
       final provider = BlocProvider.of<StudentsBloc>(context);
       if(state is StudentsInitialState){
-        provider.GetStudents(course.id);
+        provider.getStudents(course.id);
       }
       return Column(
         children: [
