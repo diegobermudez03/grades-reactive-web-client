@@ -9,92 +9,75 @@ class GradeTile extends StatelessWidget {
   final percentageInputFormatter = FilteringTextInputFormatter.allow(RegExp(r'^\d{0,2}(\.\d{0,2})?$')); 
 
   GradeTile({
-    super.key,
+    Key? key,
     required this.grade,
     required this.removeCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Text(
-                grade.value1 != null ? 'Nota ${grade.value1}' : 'Nueva nota',
-                style: TextStyle(fontWeight: FontWeight.bold),
+            const Expanded(
+              flex: 1,
+              child: Text('Nota',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Nota'),
-                  Material(
-                    child: TextField(
-                      controller: grade.value2,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Ingrese nota',
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [gradeInputFormatter],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Porcentaje'),
-                  Material(
-                    child: TextField(
-                      controller: grade.value3,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Ingrese %',
-                      ),
-                       keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [percentageInputFormatter],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Observación'),
-                  Material(
-                    child: TextField(
-                      controller: grade.value4,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Ingrese observación',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(width: 10),
+            _buildInputColumn('Nota', grade.value2, 'Ingrese nota', gradeInputFormatter, context),
+            const SizedBox(width: 10),
+            _buildInputColumn('Porcentaje', grade.value3, 'Ingrese %', percentageInputFormatter, context),
+            const SizedBox(width: 10),
+            _buildInputColumn('Observación', grade.value4, 'Ingrese observación', null, context, isPercentage: false),
             IconButton(
               onPressed: () => removeCallback(grade.value1),
-              icon: Icon(Icons.delete, color: Colors.red),
+              icon: const Icon(Icons.delete, color: Colors.red),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInputColumn(
+    String label,
+    TextEditingController controller,
+    String hintText,
+    TextInputFormatter? formatter,
+    BuildContext context, {
+    bool isPercentage = true,
+  }) {
+    return Expanded(
+      flex: isPercentage ? 1 : 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          const SizedBox(height: 4),
+          Material(
+            elevation: 1,
+            borderRadius: BorderRadius.circular(8),
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                hintText: hintText,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              ),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: formatter != null ? [formatter] : [],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -6,7 +6,7 @@ class StudentsTable extends StatelessWidget {
   final List<StudentEntity> allStudents;
   final void Function(BuildContext, StudentEntity) callback;
 
-  StudentsTable({
+  const StudentsTable({
     super.key,
     required this.courseStudents,
     required this.allStudents,
@@ -19,29 +19,41 @@ class StudentsTable extends StatelessWidget {
       child: Column(
         children: [
           _studentDropdownWithButton(context),
+          const SizedBox(height: 20),
           _printHeader(),
-          ..._printRows(courseStudents, (student) => callback(context, student)),
+          const Divider(thickness: 1),
+          ..._printRows(courseStudents, context, (student) => callback(context, student)),
         ],
       ),
     );
   }
 
   Widget _printHeader() {
-    return const Row(
-      children: [
-        Text("ID"),
-        Text("Nombre"),
-        Text("Apellido"),
-        Text("Correo"),
-        Text("Notas")
-      ],
+    return const Padding(
+      padding:  EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children:  [
+          Text("ID", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("Nombre", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("Apellido", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("Correo", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("Notas", style: TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
     );
   }
 
-  List<Widget> _printRows(List<StudentEntity> students, void Function(StudentEntity) callback) {
-    return students
-        .map(
-          (student) => Row(
+  List<Widget> _printRows(List<StudentEntity> students,BuildContext context, void Function(StudentEntity) callback) {
+    return students.map((student) {
+      return Card(
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text('${student.id}'),
               Text(student.name),
@@ -49,12 +61,14 @@ class StudentsTable extends StatelessWidget {
               Text(student.email),
               TextButton(
                 onPressed: () => callback(student),
-                child: Text("Mostrar"),
+                style: TextButton.styleFrom(backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,),
+                child: const Text("Mostrar"),
               ),
             ],
           ),
-        )
-        .toList();
+        ),
+      );
+    }).toList();
   }
 
   Widget _studentDropdownWithButton(BuildContext context) {
@@ -62,42 +76,49 @@ class StudentsTable extends StatelessWidget {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
-        return Row(
-          children: [
-            Material(
-              child: DropdownButton<StudentEntity>(
-                hint: const Text("Seleccionar Estudiante"),
-                value: selectedStudent,
-                items: allStudents
-                    .map(
-                      (student) => DropdownMenuItem<StudentEntity>(
-                        value: student,
-                        child: Text('${student.name} ${student.lastName}'),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (StudentEntity? newValue) {
-                  setState(() {
-                    selectedStudent = newValue;
-                  });
-                },
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: DropdownButtonFormField<StudentEntity>(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Seleccionar Estudiante",
+                  ),
+                  value: selectedStudent,
+                  items: allStudents.map((student) {
+                    return DropdownMenuItem<StudentEntity>(
+                      value: student,
+                      child: Text('${student.name} ${student.lastName}'),
+                    );
+                  }).toList(),
+                  onChanged: (StudentEntity? newValue) {
+                    setState(() {
+                      selectedStudent = newValue;
+                    });
+                  },
+                ),
               ),
-            ),
-            SizedBox(width: 10),
-            TextButton(
-              onPressed: selectedStudent == null
-                  ? null
-                  : () {
-                      if (selectedStudent != null) {
-                        callback(context, selectedStudent!);
-                      }
-                    },
-              child: const Text("Agregar notas"),
-            ),
-          ],
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: selectedStudent == null
+                    ? null
+                    : () {
+                        if (selectedStudent != null) {
+                          callback(context, selectedStudent!);
+                        }
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text("Agregar notas"),
+              ),
+            ],
+          ),
         );
       },
     );
   }
-
 }

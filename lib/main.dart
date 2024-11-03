@@ -16,16 +16,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
       home: BlocProvider<CoursesBloc>(
         create: (context) => GetIt.instance.get<CoursesBloc>(),
-        child: Scaffold(
-          appBar: AppBar(),
-          body: CoursesPage(),
-        )
+        child: CoursesPage(),
       ),
     );
   }
