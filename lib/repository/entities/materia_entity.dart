@@ -1,7 +1,7 @@
 class MateriaEntity{
   final int id;
-  final String nombre;
-  final int creditos;
+  final String name;
+  final int credits;
 
-  MateriaEntity(this.id, this.nombre, this.creditos);
+  MateriaEntity(this.id, this.name, this.credits);
 }

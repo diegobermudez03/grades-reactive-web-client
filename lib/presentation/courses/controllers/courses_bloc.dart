@@ -3,6 +3,12 @@ import 'package:reactive_client/presentation/courses/controllers/courses_states.
 
 class CoursesBloc extends Cubit<CoursesState>{
 
+  
+
   CoursesBloc():super(CoursesInitialState());
   
+
+  void getCourses()async{
+
+  }
 }
