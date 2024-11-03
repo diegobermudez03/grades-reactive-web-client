@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:reactive_client/presentation/grades/controllers/grades_bloc.dart';
+import 'package:reactive_client/presentation/grades/pages/grades_page.dart';
 import 'package:reactive_client/presentation/students/controller/students_bloc.dart';
 import 'package:reactive_client/presentation/students/controller/students_states.dart';
 import 'package:reactive_client/presentation/students/widgets/students_table.dart';
@@ -39,7 +42,14 @@ class StudentsPage extends StatelessWidget{
 
   void Function(BuildContext, StudentEntity) handleStudentGrades(int courseId){
     return (context, student){
-
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (subContext)=> BlocProvider(
+            create: (c)=> GetIt.instance.get<GradesBloc>(),
+            child: GradesPage(student: student, courseId: courseId),
+          )
+        )
+      );
     };
   }
 }
