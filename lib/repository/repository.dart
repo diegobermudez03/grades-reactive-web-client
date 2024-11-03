@@ -8,4 +8,6 @@ abstract class Repository{
   Future<Either<Failure, List<CourseEntity>>> getCourses();
 
   Future<Either<Failure, List<StudentEntity>>> getStudentsFromCourse(int courseId);
+
+  Future<Either<Failure, List<StudentEntity>>> getAllStudents();
 }

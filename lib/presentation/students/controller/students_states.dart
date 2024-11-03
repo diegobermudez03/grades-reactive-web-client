@@ -7,9 +7,10 @@ class StudentsInitialState implements StudentsState{}
 class StudentsRetrievingState implements StudentsState{}
 
 class StudentsRetrievedState implements StudentsState{
-  final List<StudentEntity> students;
+  final List<StudentEntity> courseStudents;
+  final List<StudentEntity> allStudents;
 
-  StudentsRetrievedState(this.students);
+  StudentsRetrievedState(this.courseStudents, this.allStudents);
 }
 
 class StudentsFailureState implements StudentsState{}

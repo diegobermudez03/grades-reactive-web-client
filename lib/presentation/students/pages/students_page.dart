@@ -32,7 +32,7 @@ class StudentsPage extends StatelessWidget{
           Text(course.code),
           switch(state){
             StudentsFailureState()=> const Center(child: Text("Hubo un error obteniendo los estudiantes"),),
-            StudentsRetrievedState(students: final students)=> StudentsTable(students: students, callback: handleStudentGrades(course.id),),
+            StudentsRetrievedState(courseStudents: final cStudents, allStudents: final all)=> StudentsTable(courseStudents: cStudents, allStudents: all,callback: handleStudentGrades(course.id),),
             StudentsState()=> const Center(child: CircularProgressIndicator(),)
           }
         ],

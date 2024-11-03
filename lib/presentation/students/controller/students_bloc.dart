@@ -1,5 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_client/core/failures.dart';
 import 'package:reactive_client/presentation/students/controller/students_states.dart';
+import 'package:reactive_client/repository/entities/student_entity.dart';
 import 'package:reactive_client/repository/repository.dart';
 
 class StudentsBloc extends Cubit<StudentsState>{
@@ -14,11 +17,22 @@ class StudentsBloc extends Cubit<StudentsState>{
     await Future.delayed(Duration.zero);
     emit(StudentsRetrievingState());
 
-    final response = await repo.getStudentsFromCourse(courseId);
+    final coursStudentsResponse = await repo.getStudentsFromCourse(courseId);
+    final allStudentsResponse = await repo.getAllStudents();
 
-    response.fold(
-      (f)=> emit(StudentsFailureState()), 
-      (students)=> emit(StudentsRetrievedState(students))
+    Tuple2<Failure?, List<StudentEntity>?> courseStudents = coursStudentsResponse.fold(
+      (f)=> Tuple2(APIFailure('error con estudiantes del curso'), null), 
+      (students)=> Tuple2(null, students)
     );
+
+    if(courseStudents.value1 != null){
+      emit(StudentsFailureState());
+    }else{
+      allStudentsResponse.fold(
+        (f)=> emit(StudentsFailureState()), 
+        (students)=> emit(StudentsRetrievedState(courseStudents.value2!, students))
+      );
+    }
+  
   }
 }

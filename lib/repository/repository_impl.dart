@@ -34,11 +34,26 @@ class RepositoryImpl implements Repository{
     }
   }
 
+  @override
+  Future<Either<Failure, List<StudentEntity>>> getAllStudents() async{
+    final url = Uri.parse('$uri/estudiantes/all');
+    final response = await http.get(url);
+    if(response.statusCode == 200){
+      return Right(_processListResponse(response.body, jsonToStudentEntity));
+    }else{
+      return Left(APIFailure(response.body));
+    }
+  }
+
+
+
   List<T> _processListResponse<T>(String json, T Function(Map<String, dynamic>) parser){
     final jsonList = jsonDecode(json) as List<dynamic>;
     return jsonList.map((json)=>
           parser(json)
       ).toList();
   }
+  
+
   
 }
