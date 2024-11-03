@@ -15,5 +15,7 @@ void initializeDependencies(){
 
 
   //bloc
-  depIn.registerFactory<CoursesBloc>(()=> CoursesBloc());
+  depIn.registerFactory<CoursesBloc>(()=> CoursesBloc(
+    depIn.get<Repository>()
+  ));
 }

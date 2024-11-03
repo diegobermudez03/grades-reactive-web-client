@@ -8,8 +8,8 @@ CourseEntity jsonToCourseEntity(Map<String, dynamic> json){
     jsonToMateriaEntity(json["materia"]), 
     jsonToTeacherEntity(json["profesor"]), 
     json["codigo"], 
-    DateTime.parse(json["fecha_inicio"]),
-    DateTime.parse(json["fecha_fin"]), 
+    DateTime.parse(json["fechaInicio"]),
+    DateTime.parse(json["fechaFin"]), 
   );
 }
 
@@ -17,7 +17,7 @@ MateriaEntity jsonToMateriaEntity(Map<String, dynamic> json){
   return MateriaEntity(
     json["id"], 
     json["nombre"], 
-    int.parse(json["creditos"])
+    json["creditos"]
   );
 }
 
